@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+void insertAtBeginning(Node* &head, int val) {
+    Node* newNode = new Node();
+    newNode->data = val;
+    newNode->prev = NULL;
+    newNode->next = head;
+
+    if (head != NULL) {
+        head->prev = newNode;
+    }
+
+    head = newNode;
+}
+void insertAtEnd(Node* &head, int val) {
+    Node* newNode = new Node();
+    newNode->data = val;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        newNode->prev = NULL;
+        head = newNode;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+void deleteNode(Node* &head, int val) {
+    Node* temp = head;
+
+    while (temp != NULL && temp->data != val) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        cout << "Value not found\n";
+        return;
+    }
+
+    if (temp->prev != NULL)
+        temp->prev->next = temp->next;
+    else
+        head = temp->next;  // deleting head
+
+    if (temp->next != NULL)
+        temp->next->prev = temp->prev;
+
+    delete temp;
+}
+void displayForward(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " <-> ";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+void displayBackward(Node* head) {
+    if (head == NULL) return;
+
+    Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    while (temp != NULL) {
+        cout << temp->data << " <-> ";
+        temp = temp->prev;
+    }
+    cout << "NULL\n";
+}
+int main() {
+    Node* head = NULL;
+
+    insertAtBeginning(head, 10);
+    insertAtBeginning(head, 20);
+    insertAtEnd(head, 30);
+    insertAtEnd(head, 40);
+
+    cout << "Forward Display:\n";
+    displayForward(head);
+
+    cout << "Backward Display:\n";
+    displayBackward(head);
+
+    deleteNode(head, 20);
+
+    cout << "After Deletion:\n";
+    displayForward(head);
+
+    return 0;
+}
