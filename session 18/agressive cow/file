@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    int aggressiveCows(vector<int> &stalls, int k) {
+    int n=stalls.size();
+        sort(stalls.begin(),stalls.end());
+        int low=1;
+        int high=stalls[n-1]-stalls[0];
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            int count=1;
+            int lastplaced=stalls[0];
+            for(int i=1;i<n;i++){
+                if(stalls[i]-lastplaced>=mid){
+                    lastplaced=stalls[i];
+                    count++;
+                }
+               
+                }
+                 if(count>=k){
+                    low=mid+1;
+            }else high=mid-1;
+            
+        }
+       return high; 
+    }
+};
